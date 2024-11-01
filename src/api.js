@@ -8,6 +8,8 @@ const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
 
   // URL과 헤더 설정
   const url = `${BASE_URL}${endpoint}`;
+
+  console.log(`url = ${url}`);
   options.headers = {
     "Content-Type": "application/json",
     ...options.headers,

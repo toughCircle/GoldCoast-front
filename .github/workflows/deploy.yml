@@ -31,7 +31,7 @@ jobs:
 
       - name: Add GCP to known_hosts
         run: |
-          ssh-keyscan -t rsa [YOUR_GCP_INSTANCE_IP] >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa ${{ secrets.GCP_VM_IP }} >> ~/.ssh/known_hosts
 
       - name: Pull latest changes and build on GCP
         env:

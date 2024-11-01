@@ -79,11 +79,17 @@ const Link = styled.a`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  margin-top: 1rem;
+`;
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
@@ -152,6 +158,9 @@ const Login = () => {
             required
           />
         </InputContainer>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+
         <Link href="/login">Login</Link>
         <ButtonWrapper>
           <Button type="submit">&rarr;</Button>

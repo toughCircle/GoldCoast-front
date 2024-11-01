@@ -27,12 +27,6 @@ const Title = styled.h2`
   margin-bottom: 3rem;
 `;
 
-const Subtitle = styled.p`
-  font-size: 0.9rem;
-  color: #6c757d;
-  margin-bottom: 2rem;
-`;
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -85,17 +79,11 @@ const Link = styled.a`
   }
 `;
 
-const ErrorMessage = styled.p`
-  color: red;
-  margin-top: 1rem;
-`;
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {

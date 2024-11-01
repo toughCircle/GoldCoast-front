@@ -7,7 +7,9 @@ const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
   const refreshToken = localStorage.getItem("refresh");
 
   // URL과 헤더 설정
-  const url = `${endpoint}`;
+  const url = `${BASE_URL}${endpoint}`; // /auth/login
+
+  console.log(`url : ${url}`);
   options.headers = {
     "Content-Type": "application/json",
     ...options.headers,

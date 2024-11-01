@@ -21,27 +21,24 @@ jobs:
         run: |
           npm run build
 
-      - name: Copy build files to GCP
+      - name: Pull latest changes and build on GCP
         env:
           GCP_HOST: ${{ secrets.GCP_VM_IP }}
           GCP_USER: ${{ secrets.GCP_VM_USER }}
           GCP_SSH_KEY: ${{ secrets.GCP_SSH_KEY }}
         run: |
-          # .ssh 디렉토리 생성
           mkdir -p ~/.ssh
-
-          # 프라이빗 키 저장 및 권한 설정
           echo "$GCP_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # 빌드 파일을 GCP 서버로 복사
-          scp -o StrictHostKeyChecking=no -r build/* $GCP_USER@$GCP_HOST:/var/www/html/react
-
-      - name: Restart Nginx on GCP
-        env:
-          GCP_HOST: ${{ secrets.GCP_VM_IP }}
-          GCP_USER: ${{ secrets.GCP_VM_USER }}
-        run: |
           ssh -o StrictHostKeyChecking=no $GCP_USER@$GCP_HOST << 'EOF'
+            cd ~/nest-project-react  # 클론한 디렉터리로 이동
+            git pull origin main      # 최신 코드 가져오기
+
+            npm install
+            npm run build
+
+            # 빌드 결과물을 Nginx 제공 디렉터리로 복사
+            sudo cp -r build/* /var/www/html/react
             sudo systemctl restart nginx
           EOF

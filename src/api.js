@@ -1,13 +1,13 @@
 // src/api.js
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+// const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
   let token = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refresh");
 
   // URL과 헤더 설정
-  const url = `${BASE_URL}${endpoint}`; // /auth/login
+  const url = `${endpoint}`; // /auth/login
 
   console.log(`url : ${url}`);
   options.headers = {

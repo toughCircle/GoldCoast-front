@@ -122,7 +122,7 @@ const Home = () => {
       try {
         // authRequired를 false로 설정해 토큰이 필요 없는 요청 보내기
         const response = await fetchWithAuth(
-          "resource/goldPrice",
+          "/resource/goldPrice",
           {
             method: "GET",
           },
@@ -147,7 +147,7 @@ const Home = () => {
     const fetchItemData = async () => {
       try {
         const response = await fetchWithAuth(
-          `resource/items`,
+          `/resource/items`,
           {
             method: "GET",
           },

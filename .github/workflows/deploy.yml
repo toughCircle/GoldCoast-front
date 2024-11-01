@@ -24,19 +24,23 @@ jobs:
       - name: Copy build files to GCP
         env:
           GCP_HOST: ${{ secrets.GCP_VM_IP }}
-          GCP_USER: ${{ secrets.GCP_SSH_KEY }}
-          GCP_SSH_KEY: ${{ secrets.GCP_VM_USER }}
+          GCP_USER: ${{ secrets.GCP_VM_USER }}
+          GCP_SSH_KEY: ${{ secrets.GCP_SSH_KEY }}
         run: |
+          # .ssh 디렉토리 생성
+          mkdir -p ~/.ssh
+
+          # 프라이빗 키 저장 및 권한 설정
           echo "$GCP_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
           # 빌드 파일을 GCP 서버로 복사
-          scp -r build/* $GCP_USER@$GCP_HOST:/var/www/html/react
+          scp -o StrictHostKeyChecking=no -r build/* $GCP_USER@$GCP_HOST:/var/www/html/react
 
       - name: Restart Nginx on GCP
         env:
-          GCP_HOST: your_gcp_instance_ip
-          GCP_USER: your_gcp_user
+          GCP_HOST: ${{ secrets.GCP_VM_IP }}
+          GCP_USER: ${{ secrets.GCP_VM_USER }}
         run: |
           ssh -o StrictHostKeyChecking=no $GCP_USER@$GCP_HOST << 'EOF'
             sudo systemctl restart nginx

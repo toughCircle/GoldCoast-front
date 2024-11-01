@@ -7,7 +7,7 @@ const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
   const refreshToken = localStorage.getItem("refresh");
 
   // URL과 헤더 설정
-  const url = `${BASE_URL}${endpoint}`;
+  const url = `${endpoint}`;
   options.headers = {
     "Content-Type": "application/json",
     ...options.headers,
@@ -36,7 +36,7 @@ const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
 // 토큰 갱신 함수
 const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refresh");
-  const response = await fetch(`${BASE_URL}/auth/refresh`, {
+  const response = await fetch(`/auth/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

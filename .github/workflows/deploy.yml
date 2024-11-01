@@ -23,9 +23,9 @@ jobs:
 
       - name: Copy build files to GCP
         env:
-          GCP_HOST: your_gcp_instance_ip
-          GCP_USER: your_gcp_user
-          GCP_SSH_KEY: ${{ secrets.GCP_SSH_KEY }}
+          GCP_HOST: ${{ secrets.GCP_VM_IP }}
+          GCP_USER: ${{ secrets.GCP_SSH_KEY }}
+          GCP_SSH_KEY: ${{ secrets.GCP_VM_USER }}
         run: |
           echo "$GCP_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa

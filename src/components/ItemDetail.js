@@ -81,7 +81,7 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchItemDetail = async () => {
       try {
-        const response = await fetchWithAuth(`resource/items/${itemId}`, {
+        const response = await fetchWithAuth(`/resource/items/${itemId}`, {
           method: "GET",
         });
         if (!response.ok) {

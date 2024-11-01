@@ -1,0 +1,43 @@
+name: Deploy Frontend to GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build frontend
+        run: |
+          npm run build
+
+      - name: Copy build files to GCP
+        env:
+          GCP_HOST: your_gcp_instance_ip
+          GCP_USER: your_gcp_user
+          GCP_SSH_KEY: ${{ secrets.GCP_SSH_KEY }}
+        run: |
+          echo "$GCP_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # 빌드 파일을 GCP 서버로 복사
+          scp -r build/* $GCP_USER@$GCP_HOST:/var/www/html/react
+
+      - name: Restart Nginx on GCP
+        env:
+          GCP_HOST: your_gcp_instance_ip
+          GCP_USER: your_gcp_user
+        run: |
+          ssh -o StrictHostKeyChecking=no $GCP_USER@$GCP_HOST << 'EOF'
+            sudo systemctl restart nginx
+          EOF

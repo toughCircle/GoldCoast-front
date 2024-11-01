@@ -98,7 +98,7 @@ const Login = () => {
 
     try {
       const response = await fetchWithAuth(
-        "auth/register",
+        "/auth/register",
         {
           method: "POST",
           body: JSON.stringify({

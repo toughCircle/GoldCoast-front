@@ -1,15 +1,13 @@
 // src/api.js
 
-// const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
   let token = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refresh");
 
   // URL과 헤더 설정
-  const url = `${endpoint}`; // /auth/login
-
-  console.log(`url : ${url}`);
+  const url = `${BASE_URL}${endpoint}`;
   options.headers = {
     "Content-Type": "application/json",
     ...options.headers,
@@ -38,7 +36,7 @@ const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
 // 토큰 갱신 함수
 const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refresh");
-  const response = await fetch(`/auth/refresh`, {
+  const response = await fetch(`${BASE_URL}/auth/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

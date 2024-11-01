@@ -157,7 +157,7 @@ const OrderPage = () => {
       shippingAddress: address,
     };
     try {
-      const response = await fetchWithAuth(`resource/orders`, {
+      const response = await fetchWithAuth(`/resource/orders`, {
         method: "POST",
         body: JSON.stringify(orderData),
       });

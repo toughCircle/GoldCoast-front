@@ -96,7 +96,6 @@ const AddProductPage = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
         alert("상품 등록이 성공했습니다!");
         navigate("/");
       } else {

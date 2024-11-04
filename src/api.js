@@ -9,7 +9,6 @@ const fetchWithAuth = async (endpoint, options = {}, authRequired = true) => {
   // URL과 헤더 설정
   const url = `${BASE_URL}${endpoint}`;
 
-  console.log(`url = ${url}`);
   options.headers = {
     "Content-Type": "application/json",
     ...options.headers,
@@ -69,4 +68,4 @@ const handleLogout = () => {
   window.location.href = "/login";
 };
 
-export default fetchWithAuth;
+export { fetchWithAuth as default, handleLogout };

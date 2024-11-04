@@ -138,8 +138,18 @@ const OrderPage = () => {
     setAddress((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleQuantityChange = (amount) => {
-    setQuantity((prev) => Math.max(1, prev + amount));
+  // 수량 증가
+  const increaseQuantity = () => {
+    if (quantity + 0.5 <= item.quantity) {
+      setQuantity((prevQuantity) => prevQuantity + 0.5);
+    }
+  };
+
+  // 수량 감소
+  const decreaseQuantity = () => {
+    if (quantity - 0.5 >= 0.5) {
+      setQuantity((prevQuantity) => prevQuantity - 0.5);
+    }
   };
 
   const toggleEditMode = () => {
@@ -165,8 +175,12 @@ const OrderPage = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log("주문 완료:", responseData);
-        // 주문 완료 후 동작 (예: 페이지 이동 또는 알림 표시)
         navigate("/order-result", { state: responseData.data });
+      }
+      if (response.status === 403) {
+        alert(
+          "판매자는 상품을 주문할 수 없습니다. 구매를 원하시면 구매자 계정으로 로그인해 주세요."
+        );
       } else {
         console.error("주문 실패:", response.statusText);
       }
@@ -182,32 +196,29 @@ const OrderPage = () => {
       <Title>Order</Title>
       <InfoText>주문 상품</InfoText>
       <ProductInfo>
-        <ProductName>{item?.itemType}</ProductName>
+        <ProductName>{item?.itemType}K</ProductName>
         <ProductPrice>{totalPrice?.toLocaleString()} 원</ProductPrice>
 
         {!isEditing && <QuantityDisplay>{quantity}</QuantityDisplay>}
 
-        {/* 수량 조절 UI - 편집 모드일 때만 활성화 */}
         {isEditing && (
           <QuantityControl>
-            <QuantityButton onClick={() => handleQuantityChange(-0.5)}>
+            <QuantityButton onClick={() => decreaseQuantity()}>
               -
             </QuantityButton>
             <QuantityDisplay>{quantity}</QuantityDisplay>
-            <QuantityButton onClick={() => handleQuantityChange(0.5)}>
+            <QuantityButton onClick={() => increaseQuantity()}>
               +
             </QuantityButton>
           </QuantityControl>
         )}
 
-        {/* 편집 버튼 */}
         <EditButton onClick={toggleEditMode}>
           {isEditing ? "완료" : "편집"}
         </EditButton>
       </ProductInfo>
 
       <AddressContainer>
-        {/* 주소 입력 및 구매 버튼 */}
         <AddressInput
           type="text"
           name="zipCode"

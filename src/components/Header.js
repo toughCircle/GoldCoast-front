@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { handleLogout } from "../api/fetchWithAuth";
+import { handleLogout } from "../api";
 
 const HeaderContainer = styled.header`
   display: flex;

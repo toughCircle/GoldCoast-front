@@ -15,6 +15,7 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 `;
 
 const PriceInfo = styled.div`
@@ -108,6 +109,22 @@ const ErrorMessage = styled.p`
   margin-top: 1rem;
 `;
 
+const AddProductButton = styled.button`
+  /* 상품 등록 버튼 스타일 */
+  font-size: 1rem;
+  color: #007bff;
+  background: none;
+  border: 1px solid #007bff;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  margin-bottom: -5rem;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  border-radius: 5px;
+`;
+
 const Home = () => {
   const [priceData, setPriceData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -116,11 +133,11 @@ const Home = () => {
   const [updateTime, setUpdateTime] = useState("16:00 UPDATE");
   const [itemData, setItemData] = useState([]);
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
 
   useEffect(() => {
     const fetchPriceData = async () => {
       try {
-        // authRequired를 false로 설정해 토큰이 필요 없는 요청 보내기
         const response = await fetchWithAuth(
           "/resource/goldPrice",
           {
@@ -217,6 +234,25 @@ const Home = () => {
     navigate(`/itemDetail/${itemId}`);
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === priceData.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 2000); // 2초마다 자동으로 다음 인덱스로 이동
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 해제
+  }, [priceData.length]);
+
+  // 상품 등록 페이지로 priceData를 전달하며 이동하는 함수
+  const handleAddProduct = () => {
+    navigate("/item", { state: { priceData } });
+  };
+
+  const sortedItemData = [...itemData].sort((a, b) => {
+    return b.quantity === 0 ? -1 : a.quantity === 0 ? 1 : 0;
+  });
+
   if (loading) return <p>로딩 중...</p>;
 
   return (
@@ -239,16 +275,22 @@ const Home = () => {
       <br />
       <UpdateInfo>1g당 가격</UpdateInfo>
 
+      {/* SELLER 사용자일 경우에만 상품 등록 버튼을 표시 */}
+      {userRole === "SELLER" && (
+        <AddProductButton onClick={handleAddProduct}>
+          상품 등록
+        </AddProductButton>
+      )}
       <ContentWrapper>
         <ItemTitle>ITEMS</ItemTitle>
         <ItemContainer>
-          {itemData.map((item, index) => (
+          {sortedItemData.map((item, index) => (
             <Item key={index}>
               <DetailContainer>
                 <ItemName>{item.id}</ItemName>
                 <ItemPrice>종류 | {item.itemType}K</ItemPrice>
                 <ItemPrice>재고 | {item.quantity}g</ItemPrice>
-                <ItemPrice>{item.price.toLocaleString()}원</ItemPrice>
+                <ItemPrice>1g | {item.price.toLocaleString()}원</ItemPrice>
               </DetailContainer>
               {item.quantity > 0 ? (
                 <BuyLink onClick={() => handleBuyClick(item.id)}>

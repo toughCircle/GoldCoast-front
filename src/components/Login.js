@@ -90,7 +90,7 @@ const ErrorMessage = styled.p`
   margin-top: 1rem;
 `;
 
-const Login = () => {
+const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -129,6 +129,9 @@ const Login = () => {
         if (token) {
           localStorage.setItem("token", token); // 토큰 저장
           localStorage.setItem("refresh", refresh);
+
+          setIsAuthenticated(true);
+
           alert("로그인 성공!");
           navigate("/"); // 홈으로 이동
         } else {

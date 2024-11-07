@@ -19,7 +19,7 @@ const Title = styled.h2`
 
 const OrderNumber = styled.h3`
   font-size: 1.2rem;
-  color: #007bff;
+  color: #d4af37;
   margin-bottom: 1rem;
   margin-top: -1rem;
 `;
@@ -69,7 +69,7 @@ const Price = styled.h4`
 const TotalPrice = styled.h3`
   font-size: 1.4rem;
   font-weight: bold;
-  color: #007bff;
+  color: #d4af37;
   margin-top: -1rem;
 `;
 
@@ -77,13 +77,13 @@ const Button = styled.button`
   margin-top: 3rem;
   padding: 1rem 2rem;
   font-size: 1rem;
-  background-color: #007bff;
+  background-color: #1a2a3a;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: #d4af37;
   }
 `;
 

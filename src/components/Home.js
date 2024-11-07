@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import fetchWithAuth from "../api";
+import LoadingSpinner from "./Loading";
 
 const Container = styled.div`
   padding: 2rem;
@@ -23,7 +24,7 @@ const PriceInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: #f5f5f5;
+  background: #ddd;
   border-radius: 10px;
   margin-bottom: 2rem;
   width: 600px;
@@ -32,9 +33,9 @@ const PriceInfo = styled.div`
 const Icon = styled.span`
   cursor: pointer;
   font-size: 1.5rem;
-  color: #333;
+  color: #333333;
   &:hover {
-    color: #007bff;
+    color: #d4af37;
   }
 `;
 
@@ -49,7 +50,7 @@ const ItemTitle = styled.h2`
   margin-left: 1rem;
   margin-bottom: 1rem;
   font-size: 1rem;
-  color: #333;
+  color: #333333;
 `;
 
 const ItemContainer = styled.div`
@@ -80,20 +81,28 @@ const ItemName = styled.span`
   color: #333;
 `;
 
+const ItemQuantity = styled.span`
+  text-align: left;
+  width: 80px;
+  font-size: 0.9rem;
+  color: #333;
+`;
+
 const ItemPrice = styled.span`
   text-align: left;
-  width: 120px;
+  width: 100px;
   font-size: 0.9rem;
   color: #333;
 `;
 
 const BuyLink = styled.a`
   font-size: 0.9rem;
-  color: #007bff;
+  color: #1a2a3a;
   cursor: pointer;
   text-decoration: none;
+  font-weight: 800;
   &:hover {
-    text-decoration: underline;
+    color: #d4af37;
   }
 `;
 
@@ -109,20 +118,40 @@ const ErrorMessage = styled.p`
   margin-top: 1rem;
 `;
 
+const TabContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const TabButton = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: ${({ active }) => (active ? "#d4af37" : "#f0f0f0")};
+  color: ${({ active }) => (active ? "white" : "#333")};
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  &:hover {
+    background-color: #d4af37;
+    color: white;
+  }
+`;
+
 const AddProductButton = styled.button`
-  /* 상품 등록 버튼 스타일 */
   font-size: 1rem;
-  color: #007bff;
+  color: #d4af37;
   background: none;
-  border: 1px solid #007bff;
+  border: 1px solid #d4af37;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  margin-top: 1rem;
-  margin-bottom: -5rem;
+  border-radius: 5px;
+  margin-top: 2rem; // 탭 버튼과 간격 추가
   &:hover {
     background-color: #f0f0f0;
   }
-  border-radius: 5px;
 `;
 
 const Home = () => {
@@ -132,6 +161,8 @@ const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [updateTime, setUpdateTime] = useState("16:00 UPDATE");
   const [itemData, setItemData] = useState([]);
+  const [sortedItemData, setSortedItemData] = useState([]);
+  const [activeTab, setActiveTab] = useState("available");
   const navigate = useNavigate();
   const userRole = localStorage.getItem("role");
 
@@ -242,23 +273,41 @@ const Home = () => {
     }, 2000); // 2초마다 자동으로 다음 인덱스로 이동
 
     return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 해제
-  }, [priceData.length]);
+  }, [priceData.length, currentIndex]);
 
   // 상품 등록 페이지로 priceData를 전달하며 이동하는 함수
   const handleAddProduct = () => {
     navigate("/item", { state: { priceData } });
   };
 
-  const sortedItemData = [...itemData].sort((a, b) => {
-    return b.quantity === 0 ? -1 : a.quantity === 0 ? 1 : 0;
-  });
+  useEffect(() => {
+    // itemData가 업데이트될 때마다 정렬된 데이터를 필터링하여 보여줌
+    const filteredData = itemData.filter((item) =>
+      activeTab === "available" ? item.quantity > 0 : item.quantity === 0
+    );
 
-  if (loading) return <p>로딩 중...</p>;
+    const sortedData = filteredData.sort((a, b) => {
+      const quantityA = parseFloat(a.quantity);
+      const quantityB = parseFloat(b.quantity);
+
+      if (quantityA === 0 && quantityB !== 0) return 1;
+      if (quantityA !== 0 && quantityB === 0) return -1;
+      return 0;
+    });
+
+    setSortedItemData(sortedData);
+  }, [itemData, activeTab]);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <Container>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <Title>Today</Title>
+      <Title>GOLD COAST</Title>
 
       {priceData.length > 0 ? (
         <PriceInfo>
@@ -281,15 +330,31 @@ const Home = () => {
           상품 등록
         </AddProductButton>
       )}
+
+      {/* 탭 메뉴 추가 */}
+      <TabContainer>
+        <TabButton
+          active={activeTab === "available"}
+          onClick={() => handleTabClick("available")}
+        >
+          판매 중인 상품
+        </TabButton>
+        <TabButton
+          active={activeTab === "soldOut"}
+          onClick={() => handleTabClick("soldOut")}
+        >
+          품절 상품
+        </TabButton>
+      </TabContainer>
       <ContentWrapper>
         <ItemTitle>ITEMS</ItemTitle>
         <ItemContainer>
           {sortedItemData.map((item, index) => (
             <Item key={index}>
               <DetailContainer>
-                <ItemName>{item.id}</ItemName>
-                <ItemPrice>종류 | {item.itemType}K</ItemPrice>
-                <ItemPrice>재고 | {item.quantity}g</ItemPrice>
+                <ItemName>{index}</ItemName>
+                <ItemName>종류 | {item.itemType}K</ItemName>
+                <ItemQuantity>재고 | {item.quantity}g</ItemQuantity>
                 <ItemPrice>1g | {item.price.toLocaleString()}원</ItemPrice>
               </DetailContainer>
               {item.quantity > 0 ? (

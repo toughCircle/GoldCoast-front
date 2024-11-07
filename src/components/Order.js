@@ -16,7 +16,8 @@ const Title = styled.h1`
 
 const InfoText = styled.p`
   font-size: 1rem;
-  color: #333;
+  font-weight: 800;
+  color: #1a2a3a;
   margin-bottom: 1rem;
 `;
 
@@ -37,14 +38,14 @@ const ProductInfo = styled.div`
 const ProductName = styled.h2`
   font-size: 1.2rem;
   font-weight: bold;
-  color: #333;
+  color: #333333;
   text-align: center;
 `;
 
 const ProductPrice = styled.h2`
   font-size: 1.2rem;
   font-weight: bold;
-  color: #007bff;
+  color: #d4af37;
   text-align: center;
 `;
 
@@ -56,7 +57,7 @@ const QuantityControl = styled.div`
 `;
 
 const EditButton = styled.button`
-  background-color: #007bff;
+  background-color: #1a2a3a;
   color: white;
   border: none;
   border-radius: 5px;
@@ -64,7 +65,7 @@ const EditButton = styled.button`
   cursor: pointer;
   font-size: 1rem;
   &:hover {
-    background-color: #0056b3;
+    background-color: #d4af37;
   }
 `;
 
@@ -108,7 +109,7 @@ const AddressInput = styled.input`
 const PurchaseButton = styled.button`
   width: 520px;
   padding: 1rem;
-  background-color: #007bff;
+  background-color: #1a2a3a;
   color: white;
   font-size: 1.2rem;
   border: none;
@@ -117,7 +118,7 @@ const PurchaseButton = styled.button`
   cursor: pointer;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   &:hover {
-    background-color: #0056b3;
+    background-color: #d4af37;
   }
 `;
 
@@ -176,8 +177,7 @@ const OrderPage = () => {
         const responseData = await response.json();
         console.log("주문 완료:", responseData);
         navigate("/order-result", { state: responseData.data });
-      }
-      if (response.status === 403) {
+      } else if (response.status === 403) {
         alert(
           "판매자는 상품을 주문할 수 없습니다. 구매를 원하시면 구매자 계정으로 로그인해 주세요."
         );

@@ -42,7 +42,7 @@ const Input = styled.input`
   margin-bottom: 2rem;
   font-size: 1rem;
   &:focus {
-    border-color: #007bff;
+    border-color: #d4af37;
     outline: none;
   }
 `;
@@ -57,7 +57,7 @@ const Button = styled.button`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  background-color: #007bff;
+  background-color: #d4af37;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -71,7 +71,7 @@ const Button = styled.button`
 `;
 
 const Link = styled.a`
-  color: #007bff;
+  color: #d4af37;
   font-size: 0.9rem;
   text-decoration: none;
   &:hover {
@@ -126,7 +126,7 @@ const Login = () => {
   return (
     <Container>
       <FormWrapper onSubmit={handleSignUp}>
-        <Title>Welcome</Title>
+        <Title>Gold Coast</Title>
 
         <InputContainer>
           <Input

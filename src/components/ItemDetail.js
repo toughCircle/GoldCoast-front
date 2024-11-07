@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import fetchWithAuth from "../api";
+import LoadingSpinner from "./Loading";
 
 const Container = styled.div`
   padding: 2rem;
@@ -30,12 +31,12 @@ const QuantityContainer = styled.div`
 
 const Icon = styled.button`
   font-size: 1.5rem;
-  color: #007bff;
+  color: #d4af37;
   background: none;
   border: none;
   cursor: pointer;
   &:hover {
-    color: #0056b3;
+    color: #1a2a3a;
   }
 `;
 
@@ -55,12 +56,13 @@ const BuyButton = styled.button`
   padding: 0.75rem 2rem;
   font-size: 1rem;
   color: #fff;
-  background-color: #007bff;
+  background-color: #d4af37;
   border: none;
   border-radius: 20px;
+  font-weight: 800;
   cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: #1a2a3a;
   }
 `;
 
@@ -113,7 +115,7 @@ const ProductDetail = () => {
     }
   };
 
-  if (loading) return <p>로딩 중...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>{error}</p>;
 
   return (

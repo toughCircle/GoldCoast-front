@@ -27,12 +27,6 @@ const Title = styled.h2`
   margin-bottom: 0.5rem;
 `;
 
-const Subtitle = styled.p`
-  font-size: 0.9rem;
-  color: #6c757d;
-  margin-bottom: 2rem;
-`;
-
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -48,7 +42,7 @@ const Input = styled.input`
   margin-bottom: 2rem;
   font-size: 1rem;
   &:focus {
-    border-color: #007bff;
+    border-color: #d4af37;
     outline: none;
   }
 `;
@@ -63,7 +57,7 @@ const Button = styled.button`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  background-color: #007bff;
+  background-color: #d4af37;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -77,7 +71,7 @@ const Button = styled.button`
 `;
 
 const Link = styled.a`
-  color: #007bff;
+  color: #d4af37;
   font-size: 0.9rem;
   text-decoration: none;
   &:hover {
@@ -125,9 +119,12 @@ const Login = ({ setIsAuthenticated }) => {
             : null;
 
         localStorage.setItem("role", data.data.role);
+        localStorage.setItem("email", data.data.email);
+        localStorage.setItem("username", data.data.username);
+        localStorage.setItem("createdAt", data.data.createdAt);
 
         if (token) {
-          localStorage.setItem("token", token); // 토큰 저장
+          localStorage.setItem("token", token);
           localStorage.setItem("refresh", refresh);
 
           setIsAuthenticated(true);
@@ -149,8 +146,7 @@ const Login = ({ setIsAuthenticated }) => {
   return (
     <Container>
       <Form onSubmit={handleLogin}>
-        <Title>Welcome back,</Title>
-        <Subtitle>You have been missed.</Subtitle>
+        <Title>Gold Coast</Title>
         <InputContainer>
           <Input
             type="email"

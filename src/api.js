@@ -62,9 +62,7 @@ const refreshAccessToken = async () => {
 
 // 로그아웃 함수
 const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("refresh");
-  localStorage.removeItem("role");
+  localStorage.clear();
   window.location.href = "/login";
 };
 

@@ -10,6 +10,8 @@ import OrderResult from "./components/OrderResult";
 import Item from "./components/Item";
 import Header from "./components/Header";
 import { handleLogout as logout } from "./api";
+import MyPage from "./components/MyPage";
+import OrderList from "./components/OrderDetail";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -64,6 +66,22 @@ const App = () => {
           element={
             <PrivateRoute>
               <Item />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/myPage"
+          element={
+            <PrivateRoute>
+              <MyPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/order-detail/:itemId"
+          element={
+            <PrivateRoute>
+              <OrderList />
             </PrivateRoute>
           }
         />

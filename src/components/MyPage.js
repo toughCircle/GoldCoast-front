@@ -140,7 +140,7 @@ const MyPage = () => {
     } else {
       fetchOrders(page);
     }
-  }, [page]);
+  }, [page, userInfo.role]);
 
   const fetchOrders = async (currentPage = 1) => {
     try {

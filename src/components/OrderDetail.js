@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import fetchWithAuth from "../api";
@@ -79,27 +79,27 @@ const OrderList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  useEffect(() => {
-    fetchOrders(page);
-  }, [page, itemId]);
-
-  const fetchOrders = async (page) => {
+  const fetchOrders = useCallback(async (currentPage = 1) => {
     try {
       const response = await fetchWithAuth(
-        `/resource/orders/${itemId}?page=${page}&limit=5`,
+        `/resource/orders?page=${currentPage}&limit=5`,
         {
           method: "GET",
         }
       );
       if (response.ok) {
-        const responseData = await response.json();
-        setOrders(responseData.data.data);
-        setTotalPages(Math.ceil(responseData.total / 5 || 1));
+        const data = await response.json();
+        setOrders(data.data);
+        setTotalPages(Math.ceil(data.total / 5));
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchOrders(page);
+  }, [page, itemId, fetchOrders]);
 
   const handleNextPage = () => {
     if (page < totalPages) {
